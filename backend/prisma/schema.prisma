@@ -9,37 +9,119 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
 
-  name      String
-  email     String   @unique
-  password  String
+  id          String @id @default(uuid())
 
-  role      String   @default("USER")
+  name        String
 
-  companies Company[]
+  email       String @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  password    String
+
+  role        String @default("USER")
+
+  companies   Company[]
+
+  createdAt   DateTime @default(now())
+
+  updatedAt   DateTime @updatedAt
 
   @@map("users")
+
 }
 
 model Company {
-  id              String   @id @default(uuid())
+
+  id              String @id @default(uuid())
 
   companyName     String
+
   gstNumber       String?
+
   state           String?
+
   address         String?
+
   phone           String?
+
   financialYear   String?
 
   createdAt       DateTime @default(now())
+
   updatedAt       DateTime @updatedAt
 
   userId          String
-  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user            User @relation(fields:[userId],references:[id],onDelete:Cascade)
+
+  groups          LedgerGroup[]
+
+  ledgers         Ledger[]
 
   @@map("companies")
+
+}
+
+model LedgerGroup {
+
+  id          String @id @default(uuid())
+
+  name        String
+
+  nature      String
+
+  description String?
+
+  companyId   String
+
+  company     Company @relation(fields:[companyId],references:[id],onDelete:Cascade)
+
+  ledgers     Ledger[]
+
+  createdAt   DateTime @default(now())
+
+  updatedAt   DateTime @updatedAt
+
+  @@map("ledger_groups")
+
+}
+
+model Ledger {
+
+  id               String @id @default(uuid())
+
+  ledgerName       String
+
+  ledgerType       String
+
+  openingBalance   Float @default(0)
+
+  balanceType      String
+
+  gstNumber        String?
+
+  phone            String?
+
+  email            String?
+
+  address          String?
+
+  state            String?
+
+  isActive         Boolean @default(true)
+
+  companyId        String
+
+  groupId          String
+
+  company          Company @relation(fields:[companyId],references:[id],onDelete:Cascade)
+
+  group            LedgerGroup @relation(fields:[groupId],references:[id])
+
+  createdAt        DateTime @default(now())
+
+  updatedAt        DateTime @updatedAt
+
+  @@map("ledgers")
+
 }

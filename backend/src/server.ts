@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes";
 import healthRoutes from "./routes/health.routes";
 import companyRoutes from "./routes/company.routes";
+import ledgerRoutes from "./routes/ledger.routes";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/health", healthRoutes);
+app.use("/api/ledger", ledgerRoutes);
 
 app.get("/", (req, res) => {
   res.json({

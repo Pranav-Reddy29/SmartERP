@@ -6,6 +6,8 @@ import "./globals.css";
 
 import Providers from "@/providers/Providers";
 
+import { Toaster } from "sonner";
+
 const inter=Inter({
 
     subsets:["latin"]
@@ -39,6 +41,11 @@ export default function RootLayout({
                 <Providers>
 
                     {children}
+
+                    <Toaster
+        position="top-right"
+        richColors
+    />
 
                 </Providers>
 
