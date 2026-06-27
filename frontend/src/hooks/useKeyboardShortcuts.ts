@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 interface KeyboardShortcuts {
   onCreateLedger?: () => void;
+  onCreateGroup?: () => void;
   onEditLedger?: () => void;
   onHome?: () => void;
   onLogout?: () => void;
@@ -11,27 +12,29 @@ interface KeyboardShortcuts {
 
 export default function useKeyboardShortcuts({
   onCreateLedger,
+  onCreateGroup,
   onEditLedger,
   onHome,
   onLogout,
 }: KeyboardShortcuts) {
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-
-      // Ignore shortcuts while typing
+    const handler = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement;
 
       if (
         target.tagName === "INPUT" ||
         target.tagName === "TEXTAREA" ||
         target.tagName === "SELECT"
-      ) {
-        return;
-      }
+      ) return;
 
       if (event.altKey && event.key.toLowerCase() === "l") {
         event.preventDefault();
         onCreateLedger?.();
+      }
+
+      if (event.altKey && event.key.toLowerCase() === "g") {
+        event.preventDefault();
+        onCreateGroup?.();
       }
 
       if (event.altKey && event.key.toLowerCase() === "a") {
@@ -50,18 +53,7 @@ export default function useKeyboardShortcuts({
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener(
-        "keydown",
-        handleKeyDown
-      );
-    };
-  }, [
-    onCreateLedger,
-    onEditLedger,
-    onHome,
-    onLogout,
-  ]);
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onCreateLedger, onCreateGroup, onEditLedger, onHome, onLogout]);
 }

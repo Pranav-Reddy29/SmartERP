@@ -9,119 +9,117 @@ datasource db {
 }
 
 model User {
+  id String @id @default(uuid())
 
-  id          String @id @default(uuid())
+  name String
 
-  name        String
+  email String @unique
 
-  email       String @unique
+  password String
 
-  password    String
+  role String @default("USER")
 
-  role        String @default("USER")
+  companies Company[]
 
-  companies   Company[]
+  createdAt DateTime @default(now())
 
-  createdAt   DateTime @default(now())
-
-  updatedAt   DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 
   @@map("users")
-
 }
 
 model Company {
+  id String @id @default(uuid())
 
-  id              String @id @default(uuid())
+  companyName String
 
-  companyName     String
+  gstNumber String?
 
-  gstNumber       String?
+  state String?
 
-  state           String?
+  address String?
 
-  address         String?
+  phone String?
 
-  phone           String?
+  financialYear String?
 
-  financialYear   String?
+  createdAt DateTime @default(now())
 
-  createdAt       DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  updatedAt       DateTime @updatedAt
+  userId String
 
-  userId          String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user            User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  groups LedgerGroup[]
 
-  groups          LedgerGroup[]
-
-  ledgers         Ledger[]
+  ledgers Ledger[]
 
   @@map("companies")
-
 }
 
 model LedgerGroup {
+  id String @id @default(uuid())
 
-  id          String @id @default(uuid())
+  name String
 
-  name        String
-
-  nature      String
+  nature String
 
   description String?
 
-  companyId   String
+  companyId String
 
-  company     Company @relation(fields:[companyId],references:[id],onDelete:Cascade)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
-  ledgers     Ledger[]
+  parentId String?
 
-  createdAt   DateTime @default(now())
+  parent LedgerGroup? @relation("GroupHierarchy", fields: [parentId], references: [id])
 
-  updatedAt   DateTime @updatedAt
+  children LedgerGroup[] @relation("GroupHierarchy")
+
+  ledgers Ledger[]
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
 
   @@map("ledger_groups")
-
 }
 
 model Ledger {
+  id String @id @default(uuid())
 
-  id               String @id @default(uuid())
+  ledgerName String
 
-  ledgerName       String
+  ledgerType String
 
-  ledgerType       String
+  openingBalance Float @default(0)
 
-  openingBalance   Float @default(0)
+  balanceType String
 
-  balanceType      String
+  gstNumber String?
 
-  gstNumber        String?
+  phone String?
 
-  phone            String?
+  email String?
 
-  email            String?
+  address String?
 
-  address          String?
+  state String?
 
-  state            String?
+  isActive Boolean @default(true)
 
-  isActive         Boolean @default(true)
+  companyId String
 
-  companyId        String
+  groupId String
 
-  groupId          String
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
-  company          Company @relation(fields:[companyId],references:[id],onDelete:Cascade)
+  group LedgerGroup @relation(fields: [groupId], references: [id])
 
-  group            LedgerGroup @relation(fields:[groupId],references:[id])
+  createdAt DateTime @default(now())
 
-  createdAt        DateTime @default(now())
-
-  updatedAt        DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 
   @@map("ledgers")
-
 }

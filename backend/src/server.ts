@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes";
 import healthRoutes from "./routes/health.routes";
 import companyRoutes from "./routes/company.routes";
 import ledgerRoutes from "./routes/ledger.routes";
+import groupRoutes from "./routes/group.routes";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/health", healthRoutes);
 app.use("/api/ledger", ledgerRoutes);
+app.use("/api/groups", groupRoutes);
 
 app.get("/", (req, res) => {
   res.json({
