@@ -51,6 +51,21 @@ export default function useKeyboardShortcuts({
         event.preventDefault();
         onLogout?.();
       }
+
+      if (event.altKey && event.key.toLowerCase() === "c") {
+        event.preventDefault();
+        options.onCreateCategory?.();
+      }
+
+      if (event.altKey && event.key.toLowerCase() === "u") {
+        event.preventDefault();
+        options.onCreateUnit?.();
+      }
+
+      if (event.altKey && event.key.toLowerCase() === "p") {
+        event.preventDefault();
+        options.onCreateProduct?.();
+      }
     };
 
     window.addEventListener("keydown", handler);
