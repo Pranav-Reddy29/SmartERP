@@ -8,6 +8,10 @@ interface KeyboardShortcuts {
   onEditLedger?: () => void;
   onHome?: () => void;
   onLogout?: () => void;
+  onCreateCategory?: () => void;
+  onCreateUnit?: () => void;
+  onCreateProduct?: () => void;
+  onCreatePurchase?: () => void;
 }
 
 export default function useKeyboardShortcuts({
@@ -16,6 +20,10 @@ export default function useKeyboardShortcuts({
   onEditLedger,
   onHome,
   onLogout,
+  onCreateCategory,
+  onCreateUnit,
+  onCreateProduct,
+  onCreatePurchase,
 }: KeyboardShortcuts) {
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -54,21 +62,36 @@ export default function useKeyboardShortcuts({
 
       if (event.altKey && event.key.toLowerCase() === "c") {
         event.preventDefault();
-        options.onCreateCategory?.();
+        onCreateCategory?.();
       }
 
       if (event.altKey && event.key.toLowerCase() === "u") {
         event.preventDefault();
-        options.onCreateUnit?.();
+        onCreateUnit?.();
       }
 
       if (event.altKey && event.key.toLowerCase() === "p") {
         event.preventDefault();
-        options.onCreateProduct?.();
+        onCreateProduct?.();
+      }
+
+      if (event.altKey && event.shiftKey && event.key.toLowerCase() === "p") {
+        event.preventDefault();
+        onCreatePurchase?.();
       }
     };
 
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [onCreateLedger, onCreateGroup, onEditLedger, onHome, onLogout]);
+  }, [
+    onCreateLedger,
+    onCreateGroup,
+    onEditLedger,
+    onHome,
+    onLogout,
+    onCreateCategory,
+    onCreateUnit,
+    onCreateProduct,
+    onCreatePurchase,
+  ]);
 }

@@ -23,6 +23,7 @@ import { useLedgers } from "@/hooks/useLedger";
 import useKeyboardShortcuts from "@/hooks/useKeyboardShortcuts";
 
 import { useAuthStore } from "@/store/auth.store";
+import useAuth from "@/hooks/useAuth";
 
 export default function LedgerPage() {
 
@@ -31,7 +32,9 @@ export default function LedgerPage() {
    * Replace this with the selected company
    * from Company Switcher on Day 7.
    */
-  const companyId = "YOUR_COMPANY_ID";
+  const { company } = useAuth();
+
+  const companyId = company?.id ?? "";
 
   const router = useRouter();
 

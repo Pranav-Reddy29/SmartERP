@@ -13,9 +13,11 @@ import { Plus } from "lucide-react";
 import { LedgerGroup } from "@/types/group";
 import { useGroups } from "@/hooks/useGroup";
 import useKeyboardShortcuts from "@/hooks/useKeyboardShortcuts";
+import useAuth from "@/hooks/useAuth";
 
 export default function GroupsPage() {
-  const companyId = "YOUR_COMPANY_ID";
+  const { company } = useAuth();
+  const companyId = company?.id ?? "";
   const { data, isLoading } = useGroups(companyId);
 
   const [createOpen, setCreateOpen] = useState(false);
