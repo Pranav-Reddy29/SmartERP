@@ -12,6 +12,7 @@ interface KeyboardShortcuts {
   onCreateUnit?: () => void;
   onCreateProduct?: () => void;
   onCreatePurchase?: () => void;
+  onCreateSales?: () => void;
 }
 
 export default function useKeyboardShortcuts({
@@ -24,6 +25,7 @@ export default function useKeyboardShortcuts({
   onCreateUnit,
   onCreateProduct,
   onCreatePurchase,
+  onCreateSales,
 }: KeyboardShortcuts) {
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -79,6 +81,11 @@ export default function useKeyboardShortcuts({
         event.preventDefault();
         onCreatePurchase?.();
       }
+
+      if (event.altKey && event.shiftKey && event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        onCreateSales?.();
+    }
     };
 
     window.addEventListener("keydown", handler);
@@ -93,5 +100,6 @@ export default function useKeyboardShortcuts({
     onCreateUnit,
     onCreateProduct,
     onCreatePurchase,
+    onCreateSales,
   ]);
 }

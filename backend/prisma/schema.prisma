@@ -63,6 +63,8 @@ model Company {
 
   purchaseVouchers PurchaseVoucher[]
 
+  salesVouchers SalesVoucher[]
+
   @@map("companies")
 }
 
@@ -126,6 +128,8 @@ model Ledger {
   group LedgerGroup @relation(fields: [groupId], references: [id])
 
   purchaseVouchers PurchaseVoucher[]
+
+  salesVouchers SalesVoucher[]
 
   createdAt DateTime @default(now())
 
@@ -211,6 +215,8 @@ model Product {
 
   purchaseItems PurchaseVoucherItem[]
 
+  salesItems SalesVoucherItem[]
+
   createdAt DateTime @default(now())
 
   updatedAt DateTime @updatedAt
@@ -251,7 +257,6 @@ model PurchaseVoucher {
   updatedAt DateTime @updatedAt
 
   @@unique([companyId, voucherNumber])
-
   @@map("purchase_vouchers")
 }
 
@@ -283,4 +288,69 @@ model PurchaseVoucherItem {
   updatedAt DateTime @updatedAt
 
   @@map("purchase_voucher_items")
+}
+
+model SalesVoucher {
+  id String @id @default(uuid())
+
+  voucherNumber String
+
+  voucherDate DateTime
+
+  customerId String
+
+  customer Ledger @relation(fields: [customerId], references: [id])
+
+  companyId String
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  subTotal Float @default(0)
+
+  discount Float @default(0)
+
+  gstTotal Float @default(0)
+
+  grandTotal Float @default(0)
+
+  notes String?
+
+  items SalesVoucherItem[]
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  @@unique([companyId, voucherNumber])
+  @@map("sales_vouchers")
+}
+
+model SalesVoucherItem {
+  id String @id @default(uuid())
+
+  salesVoucherId String
+
+  salesVoucher SalesVoucher @relation(fields: [salesVoucherId], references: [id], onDelete: Cascade)
+
+  productId String
+
+  product Product @relation(fields: [productId], references: [id])
+
+  quantity Float
+
+  rate Float
+
+  discount Float @default(0)
+
+  gstRate Float @default(0)
+
+  gstAmount Float @default(0)
+
+  amount Float
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  @@map("sales_voucher_items")
 }

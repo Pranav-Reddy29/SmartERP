@@ -11,6 +11,7 @@ import categoryRoutes from "./routes/category.routes";
 import unitRoutes from "./routes/unit.routes";
 import productRoutes from "./routes/product.routes";
 import purchaseRoutes from "./routes/purchase.routes";
+import salesRoutes from "./routes/sales.routes";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/units", unitRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/purchase", purchaseRoutes);
+app.use("/api/sales", salesRoutes);
 
 app.get("/", (req, res) => {
   res.json({
